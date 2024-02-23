@@ -8,10 +8,10 @@
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/ucode001/omind-charge-admin.git
+git clone https://gitee.com/orise001/orise-admin.git
 
 # 进入项目目录
-cd linkwe-ui
+cd orise-admin
 
 # 安装依赖
 npm install
