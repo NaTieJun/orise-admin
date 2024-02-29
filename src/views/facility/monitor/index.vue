@@ -137,7 +137,6 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {          //  这里的vm指的就是vue实例，可以用来当做this使用
-      // console.log(from)
       // 修改原有参数
       vm.$router.push({
         query: merge({}, from.query)

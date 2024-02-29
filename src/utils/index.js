@@ -7,7 +7,6 @@ export function dateFormat(dateString, fmt = 'yyyy-MM-dd hh:mm:ss') {
   }
   var date = dateString
   if (Object.prototype.toString.call(dateString) !== '[object Date]') {
-    console.log(dateString)
     date = new Date(dateString.replace(/-/g, '/'))
   }
   var o = {

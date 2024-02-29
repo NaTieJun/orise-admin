@@ -81,7 +81,6 @@ export default {
             id: "",
             type: ""
           }
-          console.log(t)
           t.forEach(province => {
             province.children = province.stationList
             province.name = province.areaVo.name

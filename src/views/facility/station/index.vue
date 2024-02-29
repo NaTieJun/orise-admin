@@ -598,8 +598,6 @@ export default {
               geocoder.getAddress([lng, lat], function (status, result) {
                 if (status === "complete" && result.info === "OK") {
                   if (result && result.regeocode) {
-                    console.log('address:', result.regeocode.formattedAddress);
-                    console.log('name:', result.regeocode.pois[0].name);
                     self.$nextTick();
                   }
                 }
@@ -620,8 +618,6 @@ export default {
               geocoder.getAddress([lng, lat], function (status, result) {
                 if (status === "complete" && result.info === "OK") {
                   if (result && result.regeocode) {
-                    console.log('address:', result.regeocode.formattedAddress);
-                    console.log('name:', result.regeocode.pois[0].name);
                     self.$nextTick();
                   }
                 }

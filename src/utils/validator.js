@@ -6,7 +6,6 @@
  */
 export function organizationNo(rule, value, callback) {
   const reg = /[a-zA-Z0-9]{9}/
-  console.log(value)
   if (value == null || !reg.test(value)) {
     let message = rule.message ? rule.message : "组织机构代码为9位"
     if(rule.message)
@@ -25,7 +24,6 @@ export function organizationNo(rule, value, callback) {
  */
 export function countryCode(rule, value, callback) {
   const reg = /.{6}/
-  console.log(countryCode, rule.countryCode)
   if (!reg.test(rule.countryCode)) {
     let message = rule.message ? rule.message : "请选择完整的省市县"
     if(rule.message)

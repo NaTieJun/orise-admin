@@ -457,7 +457,6 @@ export default {
       })
     },
     cascaderChange(value) {
-      console.log(value);
       if (value && value.length > 0) {
         this.queryParams.areaCode = value[value.length - 1]
       } else {

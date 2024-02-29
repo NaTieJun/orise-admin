@@ -207,9 +207,7 @@ export default {
     fetchList() {
       this.loading = true
       listMenu(this.queryParams).then((response) => {
-        console.log('1', this.handleTree(response.data, 'menuId'))
         this.menuList = this.handleTree(response.data, 'menuId')
-        console.log('2', this.menuList)
         this.loading = false
       })
     },

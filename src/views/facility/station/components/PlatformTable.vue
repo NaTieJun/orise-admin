@@ -128,13 +128,11 @@ export default {
     // 获取当前日期
     let myDate = new Date();
     this.currentDate = this.parseTime(myDate, '{y}{m}{d}');
-    console.log(this.currentDate)
   },
   methods: {
 
     // 选择客户群聊确认
     submitSelectCustomer(groups) {
-      console.log(groups);
       this.operator = groups
       this.$set(this.operator, 'operatorInfo', { operatorId: groups.operatorId, operatorName: groups.operatorName })
     },

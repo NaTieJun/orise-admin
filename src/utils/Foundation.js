@@ -84,7 +84,6 @@ export function whetherNavigate(type = "default") {
   let navigation =
     getCurrentPages()[getCurrentPages().length - getCurrentPages().length];
   if (getCurrentPages().length > 1) {
-    console.log(navigation, getCurrentPages());
     if (navigation.route == "pages/passport/login") {
       navigationToBack(type);
     } else {
@@ -219,7 +218,6 @@ export function countTimeDown(seconds) {
 
 function navigationToBack(type) {
   if (type == "wx") {
-    // console.log(getCurrentPages().length - 3)
     uni.navigateBack({
       delta: getCurrentPages().length,
     });
