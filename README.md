@@ -6,7 +6,7 @@
 
 [充电平台微服务源码](https://gitee.com/orise001/orise-charge-cloud)
 
-[文档](https://http://doc.trytowish.cn/)
+[开发文档](http://doc.trytowish.cn/)
 
 ## 技术栈
 
