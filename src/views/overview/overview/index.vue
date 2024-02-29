@@ -18,35 +18,38 @@
     </div>
     <div class="index_r whitebg" v-if="node.name" v-loading="loading">
       <div class="tables">
-        <div class="station_name mr10">{{node.name}}</div>
         <div style="text-align: left" class="price-info">
-          <el-row class="price-type mt5">
-            <el-col :span="3" :offset="8">
-              <div class="price-info-title">充电价格</div>
+          <el-row>
+            <el-col :span="20">
+              <div class="station_name mr10">{{node.name}}</div>
+              <div class="price-preriod">
+                <el-row class="price-row">
+                  <el-col
+                    :span="1"
+                    v-for="(item, index) in preriodItems"
+                    :key="index"
+                    :value="item"
+                    :class="['preriod-item',{'show-hour':index%2==0}]"
+                    :style="{background:preriodColor(item)}"
+                    :data-attr="index+':00'"
+                  ></el-col>
+                </el-row>
+              </div>
             </el-col>
-            <el-col :span="3" v-for="(item, index) in priceTypes" :key="index" :value="item" class="type-item">
-              <el-popover placement="top-start" title="电费与服务费" trigger="hover">
-                <div>￥{{ Number(item.elecPrice) | unitPrice }} + ￥{{ Number(item.servicePrice) | unitPrice }}</div>
-                <div slot="reference">
-                  <span :style="{background:item.color}" class="type-colum type-label mr5">{{ item.label }}</span>
-                  <span class="type-description">￥{{ (Number(item.elecPrice) + Number(item.servicePrice))| unitPrice }}</span>
+            <el-col :span="4">
+              <div class="price-type">
+                <div v-for="(item, index) in priceTypes" :key="index" :value="item" class="type-item mt5">
+                  <el-popover placement="top-start" title="电费与服务费" trigger="hover">
+                    <div>￥{{ Number(item.elecPrice) | unitPrice }} + ￥{{ Number(item.servicePrice) | unitPrice }}</div>
+                    <div slot="reference">
+                      <span :style="{background:item.color}" class="type-colum type-label mr5">{{ item.label }}</span>
+                      <span class="type-description">￥{{ (Number(item.elecPrice) + Number(item.servicePrice))| unitPrice }}</span>
+                    </div>
+                  </el-popover>
                 </div>
-              </el-popover>
+              </div>
             </el-col>
           </el-row>
-          <div class="price-preriod">
-            <el-row class="price-row">
-              <el-col
-                :span="1"
-                v-for="(item, index) in preriodItems"
-                :key="index"
-                :value="item"
-                :class="['preriod-item',{'show-hour':index%2==0}]"
-                :style="{background:preriodColor(item)}"
-                :data-attr="index+':00'"
-              ></el-col>
-            </el-row>
-          </div>
         </div>
       </div>
       <div class="tables mt10">
@@ -180,25 +183,22 @@
           </el-col>
         </el-row>
 
-        <div class="mt20">
+        <div class="mt20 bb">
           <!-- 充电分析 -->
-          <el-row :gutter="20">
-            <el-col :span="18" class="br">
-              <div class="title_name">
-                <span class="title_name">收益分析</span>
-                <el-radio-group v-model="statsType" @change="statsTypeCheck" class="ml10">
-                  <el-radio-button label="money">订单金额</el-radio-button>
-                  <el-radio-button label="order">订单数</el-radio-button>
-                  <el-radio-button label="power">充电量</el-radio-button>
-                </el-radio-group>
-              </div>
-              <BarChart ref="orderChart" :chart-data="chartData" height="400px" class="mt10" />
-            </el-col>
-            <el-col :span="6">
-              <div class="title_name">客单价占比</div>
-              <PieChart :chart-data="pieData" height="400px" />
-            </el-col>
-          </el-row>
+          <div class="title_name">
+            <span class="title_name">收益分析</span>
+            <el-radio-group v-model="statsType" @change="statsTypeCheck" class="ml10">
+              <el-radio-button label="money">订单金额</el-radio-button>
+              <el-radio-button label="order">订单数</el-radio-button>
+              <el-radio-button label="power">充电量</el-radio-button>
+            </el-radio-group>
+          </div>
+          <BarChart ref="orderChart" :chart-data="chartData" height="400px" class="mt10" />
+        </div>
+
+        <div class="mt20">
+          <div class="title_name">客单价占比</div>
+          <PieChart :chart-data="pieData" height="400px" />
         </div>
       </div>
     </div>
@@ -276,7 +276,7 @@ export default {
               alignWithLabel: true,
             },
             axisLabel: {
-              rotate: 45, // 设置旋转角度
+              rotate: 0, // 设置旋转角度
               interval: 0, // 强制显示所有标签
               textStyle: {
                 fontSize: 12 // 设置字体大小
@@ -500,7 +500,7 @@ export default {
             // 数据集
             let intervalArray = res.data.chargeCountList
             // 显示时段
-            let xArray = (this.interval == "Hour") ? intervalArray.map((i, index) => `${index}点-${index + 1}点`) : intervalArray.map((i, index) => (this.interval == "Day") ? `${parseTime(i.tm, '{m}-{d}')}` : `${parseTime(i.tm, '{y}-{m}')}`)
+            let xArray = (this.interval == "Hour") ? intervalArray.map((i, index) => `${index}:00`) : intervalArray.map((i, index) => (this.interval == "Day") ? `${parseTime(i.tm, '{m}-{d}')}` : `${parseTime(i.tm, '{y}-{m}')}`)
             // 电费
             let elecArray = res.data.eleMoneyList.map(i => Number(i.value).toFixed(2))
             // 服务费
@@ -529,6 +529,15 @@ export default {
                 barWidth: '30%',
                 data: serviceArray,
                 durationCount,
+                label: {
+                  show: true,
+                  position: 'top',
+                  formatter: function (params) {
+                    var sum = 0;
+                    sum = Number(res.data.chargeMoneyList[params.dataIndex].value).toFixed(0);
+                    return sum > 0 ? sum : "";
+                  }
+                }
               },
             ]
 
@@ -605,7 +614,7 @@ export default {
                   name: '订单数',
                   type: 'pie',
                   center: ['50%', '60%'],
-                  radius: ['30%', '50%'],
+                  // radius: ['30%', '50%'],
                   label: {
                     bleedMargin: 5
                   },
@@ -893,7 +902,7 @@ export default {
   border-radius: 5px;
   .price-info-title {
     font-size: 14px;
-    text-align: right;
+    text-align: left;
     color: #333;
   }
   .price-preriod {
